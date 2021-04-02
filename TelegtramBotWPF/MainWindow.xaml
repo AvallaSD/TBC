@@ -52,25 +52,28 @@
 				Width="140" 
 				Height="25" 
 				Grid.Column="2" 
-				Margin="0,0,0,25"/>
+				Margin="0,0,0,25" Click="sendMessageBtn_Click"/>
 		
 		<ListView x:Name="messagesListView" 
 				  Margin="80,35,80,70" 
-				  Grid.ColumnSpan="3">			
+				  Grid.ColumnSpan="3" SelectionChanged="messagesListView_SelectionChanged">			
 			<ListView.View>
 				<GridView>
 					<GridViewColumn
 						x:Name="sender"
 						Width="140"
-						Header="Отправитель"/>
+						Header="Отправитель"
+                        DisplayMemberBinding="{Binding Sender}"/>
 					<GridViewColumn
 						x:Name="Text"
 						Width="460"
-						Header="Сообщение"/>
+						Header="Сообщение"
+                        DisplayMemberBinding="{Binding Text}"/>
 					<GridViewColumn
 						x:Name="Date"
 						Width="140"
-						Header="Дата"/>
+						Header="Дата"
+                        DisplayMemberBinding="{Binding Date}"/>
 				</GridView>
 			</ListView.View>
 		</ListView>
@@ -78,8 +81,7 @@
 		<TextBox x:Name="textBox" 
 				 HorizontalAlignment="Center" 
 				 Margin="0,0,0,25" 
-				 Text="Введите сообщение..." 	
-				 Foreground="Gray"
+				 Text="" 	
 				 TextWrapping="Wrap" 
 				 VerticalAlignment="Bottom" 
 				 Width="360"

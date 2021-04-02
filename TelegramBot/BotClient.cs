@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Args;
+using Telegram.Bot.Types;
 using Telegram.Bot.Types.InputFiles;
 
 namespace TelegramBot
@@ -56,6 +58,12 @@ namespace TelegramBot
             if (message.Text == "/start")
             {
                 activeChats.Add(message.Chat.Id);
+                bot.SendTextMessageAsync(message.Chat.Id,
+                  "/list - посмотреть все загруженные файлы\n" +
+                  "/delete 0 1 2... - удалить файлы c соответствующими индексами\n" +
+                  "/download 0 1 2 - скачать файлы с соответствующими индексами\n" +
+                  "Для загрузки файла - прикрепите его к сообщению\n" +
+                  "Аудиосообщения отправленные боту также сохраняются");
             }
             if (!activeChats.Contains(message.Chat.Id))
             {
@@ -101,7 +109,7 @@ namespace TelegramBot
 
                 try
                 {
-                    indexes.ForEach(x => File.Delete(filesNames[x]));
+                    indexes.ForEach(x => System.IO.File.Delete(filesNames[x]));
                 }
                 catch (Exception)
                 {
@@ -167,12 +175,7 @@ namespace TelegramBot
 
             else
             {
-                bot.SendTextMessageAsync(message.Chat.Id,
-                  "/list - посмотреть все загруженные файлы\n" +
-                  "/delete 0 1 2... - удалить файлы c соответствующими индексами\n" +
-                  "/download 0 1 2 - скачать файлы с соответствующими индексами\n" +
-                  "Для загрузки файла - прикрепите его к сообщению\n" +
-                  "Аудиосообщения отправленные боту также сохраняются");
+                
             }
 
         }
@@ -257,9 +260,10 @@ namespace TelegramBot
             }
             return indexes;
         }
-        public void SendMessage(long chatID, string message)
+        public Task<Message> SendMessage(long chatID, string message)
         {
-            bot.SendTextMessageAsync(chatID, message);
+            return bot.SendTextMessageAsync(chatID, message);
+
         }
 
         public void AddListener(EventHandler<MessageEventArgs> handler)

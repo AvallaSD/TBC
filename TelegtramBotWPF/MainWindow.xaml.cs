@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Telegram.Bot.Args;
+using Telegram.Bot.Types;
 using TelegramBot; 
 
 namespace TelegtramBotWPF
@@ -22,18 +23,44 @@ namespace TelegtramBotWPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        BotClient client = new BotClient("1459208947:AAF4btGXyWkEQIW21eMMs0t38fWtnY6fGyQ");
-        
+        BotClient client = new BotClient("1734521582:AAGzoUWDVuw6Aec32YoMibJbh278KiezNLc");
+        long SelectedChat { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
             EventHandler<MessageEventArgs> handler = MessageListener;
             client.AddListener(handler);
         }
-        
+
         public void MessageListener(object sender, MessageEventArgs e)
         {
-            MessageBox.Show(e.Message.Text);
+            var message = e.Message;
+            var messageInfo = new MessageInfo(message);
+            Dispatcher.Invoke(() =>
+            {                
+                messagesListView.Items.Add(messageInfo);
+            });
         }
+
+        private void messagesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedMessage = e.AddedItems[0] as MessageInfo;
+            SelectedChat = selectedMessage.Message.Chat.Id;
+            textBlock.Text = selectedMessage.Sender;
+        }
+
+        private void sendMessageBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var message = client.SendMessage(SelectedChat, textBox.Text).Result;
+            textBox.Text = "";
+            var messageInfo = new MessageInfo(message, $"Я --> {textBlock.Text}");
+            Dispatcher.Invoke(() =>
+            {
+                messagesListView.Items.Add(messageInfo);
+            });
+        }
+
+        
     }
 }
