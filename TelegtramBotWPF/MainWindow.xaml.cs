@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,7 +26,7 @@ namespace TelegtramBotWPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        BotClient client = new BotClient("1734521582:AAGzoUWDVuw6Aec32YoMibJbh278KiezNLc");
+        BotClient client = new BotClient("");
         long SelectedChat { get; set; }
 
         public MainWindow()
@@ -61,6 +64,35 @@ namespace TelegtramBotWPF
             });
         }
 
-        
+        private void exitBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void saveMessagesBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var messages = messagesListView.Items.OfType<MessageInfo>().Select(x =>
+            {
+                x.Message = null;
+                return x;
+            });
+
+            using (StreamWriter stream = new StreamWriter("test.json"))
+            {
+                stream.WriteLine(JsonConvert.SerializeObject(messages));
+            }
+            MessageBox.Show("Сохранено");
+        }
+
+        private void showMEssageBtn_Click(object sender, RoutedEventArgs e)
+        {
+            string message = "";
+            var infos = JsonConvert.DeserializeObject<IEnumerable<MessageInfo>>(System.IO.File.ReadAllText("test.json"));
+            foreach (var info in infos)
+            {
+                message += $"{info.Date}\n{info.Sender}:\n{info.Text}\n";
+            }
+            MessageBox.Show(message);         
+        }
     }
 }

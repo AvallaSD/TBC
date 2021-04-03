@@ -25,7 +25,7 @@
 				VerticalAlignment="Center" 
 				Width="140" 
 				Height="25"
-				 Grid.Row="1"/>
+				Grid.Row="1" Click="exitBtn_Click"/>
 		
 		<Button x:Name="saveMessagesBtn" 
 				Content="Сохранить сообщения" 
@@ -34,7 +34,7 @@
 				Width="140" 
 				Height="25" 
 				Grid.Column="1" 
-				Grid.Row="1"/>
+				Grid.Row="1" Click="saveMessagesBtn_Click"/>
 		
 		<Button x:Name="showMEssageBtn" 
 				Content="Просмотр сообщений" 
@@ -43,7 +43,7 @@
 				Width="140" 
 				Height="25" 
 				Grid.Column="2" 
-				Grid.Row="1"/>
+				Grid.Row="1" Click="showMEssageBtn_Click"/>
 		
 		<Button x:Name="sendMessageBtn" 
 				Content="Отправить" 

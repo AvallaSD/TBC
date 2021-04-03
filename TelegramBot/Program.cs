@@ -8,7 +8,7 @@ namespace TelegramBot
     {
         static void Main()
         {
-            BotClient client = new BotClient("1459208947:AAF4btGXyWkEQIW21eMMs0t38fWtnY6fGyQ");
+            BotClient client = new BotClient("");
             while (true)
             {
                 Console.WriteLine("Бот работает. Для прекращения введите exit:");
