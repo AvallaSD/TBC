@@ -87,11 +87,19 @@ namespace TelegtramBotWPF
         private void showMEssageBtn_Click(object sender, RoutedEventArgs e)
         {
             string message = "";
-            var infos = JsonConvert.DeserializeObject<IEnumerable<MessageInfo>>(System.IO.File.ReadAllText("test.json"));
-            foreach (var info in infos)
+            if (System.IO.File.Exists("test.json"))
             {
-                message += $"{info.Date}\n{info.Sender}:\n{info.Text}\n";
+                var infos = JsonConvert.DeserializeObject<IEnumerable<MessageInfo>>(System.IO.File.ReadAllText("test.json"));
+                foreach (var info in infos)
+                {
+                    message += $"{info.Date}\n{info.Sender}:\n{info.Text}\n";
+                }
             }
+            else
+            {
+                message = "Нет сохраненных сообщений";
+            }
+            
             MessageBox.Show(message);         
         }
     }
